@@ -21,7 +21,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd spotify-stats/
           npm install -g pnpm
           pnpm install --frozen-lockfile
 
