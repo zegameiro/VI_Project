@@ -20,7 +20,11 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: cd spotify-stats/ && pnpm install --frozen-lockfile
+        run: |
+          cd spotify-stats/
+          npm install -g pnpm
+          pnpm install --frozen-lockfile
+
       - name: Build website
         run: pnpm build
 
