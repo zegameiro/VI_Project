@@ -150,3 +150,5 @@ node_modules
 psd
 thumb
 sketch
+
+public/data/universal_top_spotify_songs.csv
