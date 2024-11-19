@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { Button } from "@nextui-org/react";
 import * as d3 from "d3";
 import MapChart from "./components/MapChart";
-import "./App.css";
 import Top10 from "./components/Top10";
+import LineChart from "./components/LineChart";
+import PieChart from "./components/PieChart";
 
 function App() {
   const [data, setData] = useState([]);
@@ -29,7 +31,7 @@ function App() {
     if (data.length > 0) {
       const d = data.filter((d) => {
         if (country !== "") {
-        
+
           return d.country === country
         }
 
@@ -40,14 +42,23 @@ function App() {
   }, [data, country, setCountryData]);
 
   return (
-    <>
+    <div className="bg-[#1a1a1a] min-h-screen text-white px-10 py-5">
       {data.length > 0 && (
-        <div>
-          <MapChart data={data} setCountry={setCountry} />
-          <Top10 data={countryData.slice(0, 10)} country={country} />
+        <div className="flex flex-col">
+          <div className="flex flex-row justify-evenly">
+            <MapChart data={data} setCountry={setCountry} />
+            <Top10 data={countryData.slice(0, 10)} country={country} />
+          </div>
+          <div>
+            <Button color="primary" onClick={() => setCountry("")}>Clear Filters</Button>
+          </div>
+          <div className="flex flex-row justify-evenly">
+            <LineChart data={data} />
+            <PieChart data={data} />
+          </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

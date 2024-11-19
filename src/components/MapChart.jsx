@@ -18,7 +18,6 @@ const MapChart = ({ data, setCountry }) => {
 
     // Group data by country
     const groupedByCountry = d3.groups(countryData, (d) => d.country);
-    console.log("groupedByCountry -> ", groupedByCountry);
 
     // Calculate average popularity for each country
     let avgPopularity = {};
@@ -30,10 +29,8 @@ const MapChart = ({ data, setCountry }) => {
 
     avgPopularity = Object.entries(avgPopularity);
 
-    console.log("avgPopularity -> ", avgPopularity);
-
     // Specify the chart’s dimensions.
-    const width = 928;
+    const width = 1000;
     const marginTop = 46;
     const height = width / 2 + marginTop;
 
@@ -54,9 +51,6 @@ const MapChart = ({ data, setCountry }) => {
       d3.interpolateYlGnBu
     );
 
-    console.log("valuemap -> ", valuemap);
-    console.log("color -> ", color);
-
     // Create the SVG container.
     const svg = d3
       .select("#map-chart")
@@ -68,8 +62,6 @@ const MapChart = ({ data, setCountry }) => {
     // Add a white sphere with a black border.
     svg
       .append("path")
-      .datum({ type: "Sphere" })
-      .attr("fill", "white")
       .attr("d", path);
 
     // Add a path for each country and color it according te this data.
@@ -78,8 +70,9 @@ const MapChart = ({ data, setCountry }) => {
       .selectAll("path")
       .data(countries.features)
       .join("path")
-      .attr("fill", (d) => color(valuemap.get(d.properties.name)))
       .attr("d", path)
+      .attr("fill", "white") // Set fill color to white
+      .attr("stroke", "gray") // Set stroke color to black
     .on("click", function(event, d) {
       console.log("Country clicked -> ", d);
       handleCountryClick(event, d.properties.name);
@@ -90,7 +83,6 @@ const MapChart = ({ data, setCountry }) => {
 
   return (
     <div>
-      <h1>Top 50 Average Song Popularity by Country</h1>
       <svg id="map-chart"></svg>
     </div>
   );

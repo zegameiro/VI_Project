@@ -6,6 +6,7 @@ import {
   TableRow,
   TableColumn,
   TableCell,
+  Button
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
@@ -37,8 +38,8 @@ const Top10 = ({ data, country }) => {
   };
 
   return (
-    <>
-      <h2>Top 10 List - {country === "" ? "Global" : country}</h2>
+    <div className="flex flex-col space-y-5 justify-center">
+      <h2 className="font-semibold">Top 10 List - {country === "" ? "Global" : country}</h2>
       <Table aria-label="Top 10 List" removeWrapper className="dark">
         <TableHeader>
           <TableColumn>Rank</TableColumn>
@@ -49,7 +50,7 @@ const Top10 = ({ data, country }) => {
         <TableBody>
           {data.map((d, i) => (
             <TableRow key={i}>
-              <TableCell>{d.daily_rank}</TableCell>
+              <TableCell className="text-green-600">{d.daily_rank}º</TableCell>
               <TableCell>{d.name}</TableCell>
               <TableCell>{d.artists}</TableCell>
               <TableCell>{d.country}</TableCell>
@@ -57,7 +58,7 @@ const Top10 = ({ data, country }) => {
           ))}
         </TableBody>
       </Table>
-    </>
+    </div>
   );
 };
 
