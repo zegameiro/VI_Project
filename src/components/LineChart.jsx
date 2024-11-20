@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-const LineChart = ({ data }) => {
+const LineChart = ({ data, country }) => {
   const svgRef = useRef();
 
   const interpolatePositions = (start, end) => {
@@ -10,13 +10,13 @@ const LineChart = ({ data }) => {
   };
 
   const prepareChartData = (data) => {
-    return data.slice(0, 10).map((item, index) => {
+    return data.map((item, index) => {
       const currentPos = index + 1;
       const lastWeekPos =
         item.weekly_movement > 0
-          ? currentPos - parseInt(item.weekly_movement)
+          ? parseInt(item.weekly_movement) > currentPos ? parseInt(item.weekly_movement) - currentPos : currentPos - parseInt(item.weekly_movement)
           : item.weekly_movement < 0
-          ? currentPos + parseInt(item.weekly_movement)
+          ? currentPos + (- parseInt(item.weekly_movement))
           : currentPos;
 
       const positions = interpolatePositions(lastWeekPos, currentPos).map(
@@ -38,7 +38,10 @@ const LineChart = ({ data }) => {
   };
 
   useEffect(() => {
-    const chartData = prepareChartData(data.filter((d) => d.country == ""));
+
+    const dataCountry = data.filter((d) => (country ? d.country === country : d.country === ""))
+
+    const chartData = prepareChartData(dataCountry);
 
     console.log(chartData);
 
@@ -89,12 +92,12 @@ const LineChart = ({ data }) => {
 
     svg
       .append("text")
-      .attr("x", -height / 2) // Center vertically
-      .attr("y", -margin.left + 15) // Position left of the y-axis
-      .attr("text-anchor", "middle") // Align center
+      .attr("x", -height / 2)
+      .attr("y", -margin.left + 15)
+      .attr("text-anchor", "middle")
       .attr("font-size", "14px")
       .attr("fill", "white")
-      .attr("transform", "rotate(-90)") // Rotate to align with the y-axis
+      .attr("transform", "rotate(-90)")
       .text("Ranking");
 
     const points = [];
@@ -115,7 +118,7 @@ const LineChart = ({ data }) => {
       )
       .each((d) => {
         d.positions.forEach((p) => {
-          points.push([xScale(p.date), yScale(p.position), d.name, p.position]);
+          points.push([xScale(p.date), yScale(p.position), d.name, d3.format(".0f")(p.position)]);
         });
       });
 
@@ -130,7 +133,7 @@ const LineChart = ({ data }) => {
       const i = d3.leastIndex(points, ([x, y]) => Math.hypot(x - xm, y - ym));
       const [x, y, name, position] = points[i];
       path
-        .style("stroke", ({ name: z }) => (z === name ? "steelblue" : "#ddd"))
+        .style("stroke", ({ name: z }) => (z === name ? "steelblue" : "gray"))
         .filter(({ name: z }) => z === name)
         .raise();
       dot.attr("transform", `translate(${x},${y})`);
@@ -156,7 +159,7 @@ const LineChart = ({ data }) => {
       .on("pointermove", pointermoved)
       .on("pointerenter", pointerentered)
       .on("pointerleave", pointerleft);
-  }, [data]);
+  }, [data, country]);
 
   return (
     <div className="flex flex-col items-center space-y-10">

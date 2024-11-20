@@ -10,11 +10,12 @@ function App() {
   const [data, setData] = useState([]);
   const [country, setCountry] = useState("");
   const [countryData, setCountryData] = useState([]);
+  const [song, setSong] = useState();
 
   useEffect(() => {
     // fetch csv
     const fetchData = async () => {
-      const response = await fetch("/data/min.csv");
+      const response = await fetch("/data/reduced_file.csv");
       const data = await response.text();
       const parsedData = d3.csvParse(data);
       setData(parsedData);
@@ -53,8 +54,8 @@ function App() {
             <Button color="primary" onClick={() => setCountry("")}>Clear Filters</Button>
           </div>
           <div className="flex flex-row justify-evenly">
-            <LineChart data={data} />
-            <PieChart data={data} />
+            <LineChart data={data} country={country} />
+            <PieChart data={data} country={country} />
           </div>
         </div>
       )}
