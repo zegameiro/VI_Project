@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { MdExplicit } from "react-icons/md";
+import { FaArrowDownShortWide, FaArrowUpWideShort } from "react-icons/fa6";
 
 const Top10 = ({ data, country }) => {
   const [topSongs, setTopSongs] = useState(data.slice(0, 10));
@@ -32,16 +33,16 @@ const Top10 = ({ data, country }) => {
         <TableHeader>
           <TableColumn>Rank</TableColumn>
           <TableColumn>Name</TableColumn>
+          <TableColumn>Variation</TableColumn>
           <TableColumn>Artists</TableColumn>
-          <TableColumn>Country</TableColumn>
         </TableHeader>
         <TableBody>
           {data.map((d, i) => (
             <TableRow key={i}>
               <TableCell className="text-green-600">{d.daily_rank}º</TableCell>
               <TableCell>{d.name} {d.is_explicit != "False" && <MdExplicit />}</TableCell>
+              <TableCell>{parseInt(d.weekly_movement) > 0 ? <FaArrowUpWideShort className="text-green-500"/> : parseInt(d.weekly_movement) < 0 ? <FaArrowDownShortWide className="text-red-600" /> : ""}</TableCell>
               <TableCell>{d.artists}</TableCell>
-              <TableCell>{d.country}</TableCell>
             </TableRow>
           ))}
         </TableBody>

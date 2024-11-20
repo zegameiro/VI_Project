@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Button } from "@nextui-org/react";
 import * as d3 from "d3";
+
 import MapChart from "./components/MapChart";
 import Top10 from "./components/Top10";
 import LineChart from "./components/LineChart";
 import PieChart from "./components/PieChart";
+import BarChart from "./components/BarChart";
 
 function App() {
   const [data, setData] = useState([]);
@@ -50,12 +52,13 @@ function App() {
             <MapChart data={data} setCountry={setCountry} />
             <Top10 data={countryData.slice(0, 10)} country={country} />
           </div>
-          <div>
+          <div className="py-5">
             <Button color="primary" onClick={() => setCountry("")}>Clear Filters</Button>
           </div>
-          <div className="flex flex-row justify-evenly">
+          <div className="grid grid-cols-2 gap-4">
             <LineChart data={data} country={country} />
             <PieChart data={data} country={country} />
+            <BarChart data={data} country={country} />
           </div>
         </div>
       )}
