@@ -83,7 +83,7 @@ const BarChart = ({ data, country }) => {
           .attr("y", 10)
           .attr("fill", "currentColor")
           .attr("text-anchor", "start")
-          .text("↑ Frequency (%)"));
+          .text("Popularity"));
 
   }, [data, country]);
 

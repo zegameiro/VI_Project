@@ -41,7 +41,7 @@ const Top10 = ({ data, country }) => {
             <TableRow key={i}>
               <TableCell className="text-green-600">{d.daily_rank}º</TableCell>
               <TableCell>{d.name} {d.is_explicit != "False" && <MdExplicit />}</TableCell>
-              <TableCell>{parseInt(d.weekly_movement) > 0 ? <FaArrowUpWideShort className="text-green-500"/> : parseInt(d.weekly_movement) < 0 ? <FaArrowDownShortWide className="text-red-600" /> : ""}</TableCell>
+              <TableCell>{parseInt(d.weekly_movement) < 0 ? <FaArrowUpWideShort className="text-green-500"/> : parseInt(d.weekly_movement) > 0 ? <FaArrowDownShortWide className="text-red-600" /> : ""}</TableCell>
               <TableCell>{d.artists}</TableCell>
             </TableRow>
           ))}

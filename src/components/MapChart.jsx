@@ -38,6 +38,19 @@ const MapChart = ({ data, setCountry }) => {
       .attr("viewBox", [0, 0, width, height])
       .attr("style", "max-width: 100%; height: auto;");
 
+    const tooltip = d3.select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("background", "black")
+      .style("border", "1px solid #ccc")
+      .style("padding", "8px")
+      .style("border-radius", "4px")
+      .style("box-shadow", "0px 2px 10px rgba(0, 0, 0, 0.1)")
+      .style("visibility", "hidden")
+      .style("pointer-events", "none")
+      .style("font-size", "12px")
+      .style("color", "white");
+
     svg
       .append("path")
       .attr("d", path);
@@ -53,6 +66,17 @@ const MapChart = ({ data, setCountry }) => {
     .on("click", function(event, d) {
       console.log("Country clicked -> ", d);
       handleCountryClick(event, d.properties.name);
+    })
+    .on("mouseover", (event, d) => {
+      tooltip.style("visibility", "visible")
+        .html(d.properties.name);
+    })
+    .on("mousemove", event => {
+      tooltip.style("top", `${event.pageY - 10}px`)
+        .style("left", `${event.pageX + 10}px`);
+    })
+    .on("mouseout", () => {
+      tooltip.style("visibility", "hidden");
     })
     .append("title")
     .text((d) => d.properties.name)
