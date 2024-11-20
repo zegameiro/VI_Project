@@ -5,31 +5,43 @@ import {
   TableBody,
   TableRow,
   TableColumn,
-  TableCell,
-  Button
+  TableCell
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { MdExplicit } from "react-icons/md";
 import { FaArrowDownShortWide, FaArrowUpWideShort } from "react-icons/fa6";
 
-const Top10 = ({ data, country }) => {
-  const [topSongs, setTopSongs] = useState(data.slice(0, 10));
+const Top10 = ({ data, country, setSong, song }) => {
+  const [topSongs, setTopSongs] = useState(data);
+  const [selectedRow, setSelectedRow] = useState(new Set());
 
   useEffect(() => {
     const fetchData = () => {
       setTopSongs(
-        data.filter((d) => (country ? d.country === country : d)).slice(0, 10)
+        data.filter((d) => (country ? d.country === country : d))
       );
     };
     fetchData();
-  } , [data, country]);
 
-  console.log(topSongs)
+    if(selectedRow.size > 0)
+      setSong(data.at(Object.values(selectedRow)[0]))
+
+    else if (selectedRow.size == 0)
+      setSong(null);
+
+  } , [data, country, selectedRow, song]);
 
   return (
     <div className="flex flex-col space-y-5 justify-center">
       <h2 className="font-semibold">Top 10 List - {country === "" ? "Global" : country}</h2>
-      <Table aria-label="Top 10 List" selectionMode="single" removeWrapper className="dark">
+      <Table 
+        aria-label="Top 10 List" 
+        selectionMode="single" 
+        removeWrapper 
+        className="dark"
+        selectedKeys={selectedRow}
+        onSelectionChange={setSelectedRow}
+      >
         <TableHeader>
           <TableColumn>Rank</TableColumn>
           <TableColumn>Name</TableColumn>

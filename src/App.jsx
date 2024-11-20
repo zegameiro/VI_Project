@@ -7,6 +7,7 @@ import Top10 from "./components/Top10";
 import LineChart from "./components/LineChart";
 import PieChart from "./components/PieChart";
 import BarChart from "./components/BarChart";
+import BubbleMap from "./components/BubbleMap";
 
 function App() {
   const [data, setData] = useState([]);
@@ -24,19 +25,14 @@ function App() {
     };
 
     fetchData();
-    /* d3.csv("/data/universal_top_spotify_songs.csv").then((data) => {
-      setData(data);
-    }); */
   }, []);
 
   useEffect(() => {
     console.log("country -> ", country);
     if (data.length > 0) {
       const d = data.filter((d) => {
-        if (country !== "") {
-
+        if (country !== "")
           return d.country === country
-        }
 
         return d.country === "";
       });
@@ -44,13 +40,19 @@ function App() {
     }
   }, [data, country, setCountryData]);
 
+  console.log(song)
+
   return (
     <div className="bg-[#1a1a1a] min-h-screen text-white px-10 py-5">
       {data.length > 0 && (
         <div className="flex flex-col">
           <div className="flex flex-row justify-evenly">
-            <MapChart data={data} setCountry={setCountry} />
-            <Top10 data={countryData.slice(0, 10)} country={country} />
+            {song != null ? (
+              <BubbleMap data={data} song={song} setCountry={setCountry} />
+            ) : (
+              <MapChart data={data} setCountry={setCountry} />
+            )}
+            <Top10 data={countryData.slice(0, 10)} country={country} setSong={setSong} song={song} />
           </div>
           <div className="py-5">
             <Button color="primary" onClick={() => setCountry("")}>Clear Filters</Button>
