@@ -75,7 +75,7 @@ const MapChart = ({ data, setCountry }) => {
           .html(d.properties.name)
           .style(
             "color",
-            countryData.includes(d.properties.name) ? "white" : "gray"
+            countryData.has(d.properties.name) ? "white" : "gray"
           );
       })
       .on("mousemove", (event) => {
