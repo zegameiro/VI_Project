@@ -12,16 +12,9 @@ import { MdExplicit } from "react-icons/md";
 import { FaArrowDownShortWide, FaArrowUpWideShort } from "react-icons/fa6";
 
 const Top10 = ({ data, country, setSong, song }) => {
-  const [topSongs, setTopSongs] = useState(data);
   const [selectedRow, setSelectedRow] = useState(new Set());
 
   useEffect(() => {
-    const fetchData = () => {
-      setTopSongs(
-        data.filter((d) => (country ? d.country === country : d))
-      );
-    };
-    fetchData();
 
     if(selectedRow.size > 0)
       setSong(data.at(Object.values(selectedRow)[0]))
@@ -33,7 +26,7 @@ const Top10 = ({ data, country, setSong, song }) => {
 
   return (
     <div className="flex flex-col space-y-5 justify-center">
-      <h2 className="font-semibold">Top 10 List - {country === "" ? "Global" : country}</h2>
+      <h2 className="font-semibold text-center">Top 10 List - {country === "" ? "Global" : country}</h2>
       <Table 
         aria-label="Top 10 List" 
         selectionMode="single" 
@@ -53,7 +46,7 @@ const Top10 = ({ data, country, setSong, song }) => {
             <TableRow key={i}>
               <TableCell className="text-green-600">{d.daily_rank}º</TableCell>
               <TableCell>{d.name} {d.is_explicit != "False" && <MdExplicit />}</TableCell>
-              <TableCell>{parseInt(d.weekly_movement) < 0 ? <FaArrowUpWideShort className="text-green-500"/> : parseInt(d.weekly_movement) > 0 ? <FaArrowDownShortWide className="text-red-600" /> : ""}</TableCell>
+              <TableCell>{parseInt(d.weekly_movement) > 0 ? <FaArrowUpWideShort className="text-green-500"/> : parseInt(d.weekly_movement) < 0 ? <FaArrowDownShortWide className="text-red-600" /> : ""}</TableCell>
               <TableCell>{d.artists}</TableCell>
             </TableRow>
           ))}

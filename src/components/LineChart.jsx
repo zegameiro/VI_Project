@@ -10,14 +10,11 @@ const LineChart = ({ data, country }) => {
   };
 
   const prepareChartData = (data) => {
-    return data.map((item, index) => {
-      const currentPos = index + 1;
+    return data.map((item) => {
+      const currentPos = parseInt(item.daily_rank);
+      const weekly_movement = parseInt(item.weekly_movement)
       const lastWeekPos =
-        item.weekly_movement > 0
-          ? parseInt(item.weekly_movement) > currentPos ? parseInt(item.weekly_movement) - currentPos : currentPos - parseInt(item.weekly_movement)
-          : item.weekly_movement < 0
-          ? currentPos + (- parseInt(item.weekly_movement))
-          : currentPos;
+      weekly_movement == 0 ? currentPos : currentPos + weekly_movement;
 
       const positions = interpolatePositions(lastWeekPos, currentPos).map(
         (position, i) => ({
@@ -28,8 +25,6 @@ const LineChart = ({ data, country }) => {
         })
       );
 
-      console.log(positions);
-
       return {
         name: item.name,
         positions,
@@ -38,12 +33,11 @@ const LineChart = ({ data, country }) => {
   };
 
   useEffect(() => {
-
-    const dataCountry = data.filter((d) => (country ? d.country === country : d.country === ""))
+    const dataCountry = data.filter((d) =>
+      country ? d.country === country : d.country === ""
+    );
 
     const chartData = prepareChartData(dataCountry);
-
-    console.log(chartData);
 
     const margin = { top: 20, right: 30, bottom: 50, left: 50 };
     const width = 800 - margin.left - margin.right;
@@ -61,8 +55,6 @@ const LineChart = ({ data, country }) => {
     const allDates = Array.from(
       new Set(chartData.flatMap((song) => song.positions.map((p) => p.date)))
     );
-
-    console.log(allDates);
 
     const xScale = d3.scalePoint().domain(allDates).range([0, width]);
 
@@ -118,7 +110,12 @@ const LineChart = ({ data, country }) => {
       )
       .each((d) => {
         d.positions.forEach((p) => {
-          points.push([xScale(p.date), yScale(p.position), d.name, d3.format(".0f")(p.position)]);
+          points.push([
+            xScale(p.date),
+            yScale(p.position),
+            d.name,
+            d3.format(".0f")(p.position),
+          ]);
         });
       });
 
@@ -164,7 +161,7 @@ const LineChart = ({ data, country }) => {
   return (
     <div className="flex flex-col items-center space-y-10">
       <h1 className="font-semibold">
-        Change in rankings of the 10 top songs in the world compared to the
+        Change in rankings of the 10 top songs in {country != "" ? country : "the World"} compared to the
         previous week
       </h1>
       <svg ref={svgRef}></svg>

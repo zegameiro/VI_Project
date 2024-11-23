@@ -29,7 +29,6 @@ const CompareModal = ({ data, country }) => {
   }, [data, country]);
 
   const handleSelectionChange = (keys) => {
-    if (keys.size > 2) return;
 
     setSelectedSongs([...keys]);
 
@@ -47,29 +46,31 @@ const CompareModal = ({ data, country }) => {
       </Button>
       <Modal
         isOpen={isOpen}
+        isDismissable={false}
         onOpenChange={onOpenChange}
         isKeyboardDismissDisabled={true}
+        scrollBehavior="inside"
         hideCloseButton
-        className="bg-[#1a1a1a]"
+        className="dark"
         size="5xl"
       >
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 text-white">
-                Compare 2 songs from top 10 of the world
+                Compare songs from top 10 of {country != "" ?  country : "the World"}
               </ModalHeader>
-              <ModalBody className="text-white">
+              <ModalBody className="">
                 <Select
                   items={songs}
                   label="Songs to compare"
                   placeholder="Select 2 songs"
                   labelPlacement="outside"
-                  className="max-w-xs"
-                  color="success"
+                  className="dark w-full text-white"
                   selectionMode="multiple"
                   selectedKeys={selectedSongs}
                   onSelectionChange={handleSelectionChange}
+                  description="You can select more than 2 songs and it will display a spider chart for each song"
                 >
                   {(song) => (
                     <SelectItem key={song.daily_rank} textValue={song.name}>
@@ -93,10 +94,10 @@ const CompareModal = ({ data, country }) => {
                     </SelectItem>
                   )}
                 </Select>
-                <div className="flex flex-row justify-evenly">
-                  {songObjects.length == 2 &&
+                <div className="grid grid-cols-3 gap-10">
+                  {songObjects.length >= 2 &&
                     songObjects.map((song) => (
-                      <div key={song.id} className="space-y-4">
+                      <div key={song.spotify_id} className="space-y-4">
                         <h3 className="text-white">{song.name}</h3>
                         <SpiderChart song={song} />
                       </div>
@@ -108,7 +109,7 @@ const CompareModal = ({ data, country }) => {
                   color="danger"
                   variant="bordered"
                   onPress={onClose}
-                  onClick={() => {setSelectedSongs([]); setSongObjects([]); setSongs([]);}}
+                  onClick={() => {setSelectedSongs([]); setSongObjects([]);}}
                 >
                   Close
                 </Button>

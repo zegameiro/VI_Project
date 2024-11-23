@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import countries from "../../public/data/countries.json";
 import * as d3 from "d3";
+import HelpPopHover from "./HelpPopOver";
 
 const MapChart = ({ data, setCountry }) => {
 
@@ -10,11 +11,8 @@ const MapChart = ({ data, setCountry }) => {
     const countryData = data.filter((d) => d.country !== "");
 
     const handleCountryClick = (event, country) => {
-        console.log("Country clicked -> ", country);
       setCountry(country);
     };
-
-    const groupedByCountry = d3.groups(countryData, (d) => d.country);
 
     // Specify the chart’s dimensions.
     const width = 1000;
@@ -84,7 +82,11 @@ const MapChart = ({ data, setCountry }) => {
   }, [data, setCountry]);
 
   return (
-    <div>
+    <div className="flex flex-col text-center">
+      <div className="flex flex-row items-center justify-between">
+        <h1 className="font-semibold">Map of the World</h1>
+        <HelpPopHover />
+      </div>
       <svg id="map-chart"></svg>
     </div>
   );

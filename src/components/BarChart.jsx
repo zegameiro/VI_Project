@@ -89,7 +89,7 @@ const BarChart = ({ data, country }) => {
 
   return (
     <div className="flex flex-col space-y-10 text-center">
-      <h1 className="font-semibold">Popularity of the top 10 Songs</h1>
+      <h1 className="font-semibold">Popularity of the top 10 Songs in {country != "" ? country : "the World"} </h1>
       <svg ref={svgRef}></svg>
     </div>
   )
