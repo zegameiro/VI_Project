@@ -96,12 +96,11 @@ const CompareModal = ({ data, country }) => {
                 </Select>
                 <div className="grid grid-cols-3 gap-10">
                   {songObjects.length >= 2 &&
-                    songObjects.map((song) => (
-                      <div key={song.spotify_id} className="space-y-4">
-                        <h3 className="text-white">{song.name}</h3>
-                        <SpiderChart song={song} />
-                      </div>
-                    ))}
+                    <div className="space-y-4 items-center">
+                      <h3 className="text-white font-semibold">Songs</h3>
+                      <SpiderChart songs={songObjects} />
+                    </div>
+                  }
                 </div>
               </ModalBody>
               <ModalFooter>
