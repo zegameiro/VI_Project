@@ -8,6 +8,7 @@ import LineChart from "./components/LineChart";
 import PieChart from "./components/PieChart";
 import BarChart from "./components/BarChart";
 import BubbleMap from "./components/BubbleMap";
+import CompareModal from "./components/CompareModal";
 
 function App() {
   const [data, setData] = useState([]);
@@ -28,7 +29,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log("country -> ", country);
     if (data.length > 0) {
       const d = data.filter((d) => {
         if (country !== "")
@@ -39,8 +39,6 @@ function App() {
       setCountryData(d);
     }
   }, [data, country, setCountryData]);
-
-  console.log(song)
 
   return (
     <div className="bg-[#1a1a1a] min-h-screen text-white px-10 py-5">
@@ -54,8 +52,9 @@ function App() {
             )}
             <Top10 data={countryData.slice(0, 10)} country={country} setSong={setSong} song={song} />
           </div>
-          <div className="py-5">
-            <Button color="primary" onClick={() => setCountry("")}>Clear Filters</Button>
+          <div className="flex flex-row py-5 space-x-5">
+            <Button color="primary" onClick={() => {setCountry(""); setSong("")}}>Clear Filters</Button>
+            <CompareModal data={data} country={country} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <LineChart data={data} country={country} />

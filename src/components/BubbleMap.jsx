@@ -9,13 +9,7 @@ const BubbleMap = ({ data, song, setCountry }) => {
     const songDataByCountry = data.filter(
       (s) => s.spotify_id === song.spotify_id && s.country !== ""
     );
-
-    const countryPopularityMap = new Map(
-      songDataByCountry.map((d) => [d.country, d.daily_rank])
-    );
-
-    console.log(songDataByCountry);
-
+    
     const width = 1000;
     const marginTop = 46;
     const height = width / 2 + marginTop;
