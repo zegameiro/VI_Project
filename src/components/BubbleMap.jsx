@@ -9,6 +9,8 @@ const BubbleMap = ({ data, song, setCountry }) => {
     const songDataByCountry = data.filter(
       (s) => s.spotify_id === song.spotify_id && s.country !== ""
     );
+
+    const countryData = new Set(data.map((d) => d.country));
     
     const width = 1000;
     const marginTop = 46;
@@ -51,8 +53,13 @@ const BubbleMap = ({ data, song, setCountry }) => {
       .data(countries.features)
       .join("path")
       .attr("d", path)
-      .attr("fill", "#E5E5E5")
-      .attr("stroke", "gray");
+      .attr("fill", (d) => 
+        countryData.has(d.properties.name) ? "lightgreen" : "lightgray"
+      )
+      .attr("stroke", "gray")
+      .style("cursor", (d) => 
+        countryData.has(d.properties.name)? "default" : "not-allowed"
+      );
 
     const maxPopularity = d3.max(songDataByCountry, (d) => d.daily_rank) || 1;
 
