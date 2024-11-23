@@ -5,10 +5,10 @@ import * as d3 from "d3";
 import HelpPopHover from "./HelpPopOver";
 
 const MapChart = ({ data, setCountry }) => {
-
   useEffect(() => {
+    const countryData = new Set(data.map((d) => d.country));
 
-    const countryData = data.filter((d) => d.country !== "");
+    console.log(countryData);
 
     const handleCountryClick = (event, country) => {
       setCountry(country);
@@ -36,7 +36,8 @@ const MapChart = ({ data, setCountry }) => {
       .attr("viewBox", [0, 0, width, height])
       .attr("style", "max-width: 100%; height: auto;");
 
-    const tooltip = d3.select("body")
+    const tooltip = d3
+      .select("body")
       .append("div")
       .style("position", "absolute")
       .style("background", "black")
@@ -49,9 +50,7 @@ const MapChart = ({ data, setCountry }) => {
       .style("font-size", "12px")
       .style("color", "white");
 
-    svg
-      .append("path")
-      .attr("d", path);
+    svg.append("path").attr("d", path);
 
     svg
       .append("g")
@@ -59,26 +58,37 @@ const MapChart = ({ data, setCountry }) => {
       .data(countries.features)
       .join("path")
       .attr("d", path)
-      .attr("fill", "white")
+      .attr("fill", (d) =>
+        countryData.has(d.properties.name) ? "lightgreen" : "lightgray"
+      )
       .attr("stroke", "gray")
-    .on("click", function(event, d) {
-      console.log("Country clicked -> ", d);
-      handleCountryClick(event, d.properties.name);
-    })
-    .on("mouseover", (event, d) => {
-      tooltip.style("visibility", "visible")
-        .html(d.properties.name);
-    })
-    .on("mousemove", event => {
-      tooltip.style("top", `${event.pageY - 10}px`)
-        .style("left", `${event.pageX + 10}px`);
-    })
-    .on("mouseout", () => {
-      tooltip.style("visibility", "hidden");
-    })
-    .append("title")
-    .text((d) => d.properties.name)
-    .attr("fill", "white");
+      .style("cursor", (d) =>
+        countryData.has(d.properties.name) ? "pointer" : "not-allowed"
+      )
+      .on("click", function (event, d) {
+        if (countryData.has(d.properties.name))
+          handleCountryClick(event, d.properties.name);
+      })
+      .on("mouseover", (event, d) => {
+        tooltip
+          .style("visibility", "visible")
+          .html(d.properties.name)
+          .style(
+            "color",
+            countryData.includes(d.properties.name) ? "white" : "gray"
+          );
+      })
+      .on("mousemove", (event) => {
+        tooltip
+          .style("top", `${event.pageY - 10}px`)
+          .style("left", `${event.pageX + 10}px`);
+      })
+      .on("mouseout", () => {
+        tooltip.style("visibility", "hidden");
+      })
+      .append("title")
+      .text((d) => d.properties.name)
+      .attr("fill", "white");
   }, [data, setCountry]);
 
   return (
