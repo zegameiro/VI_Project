@@ -4,7 +4,6 @@ import * as d3 from "d3";
 const SpiderChart = ({ song }) => {
   useEffect(() => {
     const data = [
-      { axis: "Popularity", value: song.popularity / 100, color: "#FF5733" },
       { axis: "Dancebility", value: song.danceability, color: "#33FF57" },
       { axis: "Energy", value: song.energy, color: "#3357FF" },
       { axis: "Speechiness", value: song.speechiness, color: "#FF33A1" },
@@ -28,7 +27,9 @@ const SpiderChart = ({ song }) => {
       .attr("width", width)
       .attr("height", height)
       .append("g")
-      .attr("transform", `translate(${width / 2}, ${height / 2})`);
+      .attr("viewBox", [0, 0, width, height])
+      .attr("transform", `translate(${width / 2}, ${height / 2})`)
+      .attr("style", "max-width: 100%; height: auto;");
 
     // Draw concentric circles
     for (let i = 0; i < levels; i++) {
@@ -77,6 +78,7 @@ const SpiderChart = ({ song }) => {
       .style("background", "rgba(0, 0, 0, 0.7)")
       .style("color", "#fff")
       .style("padding", "5px 10px")
+      .style("box-shadow", "0px 2px 10px rgba(0, 0, 0, 0.1)")
       .style("border-radius", "5px")
       .style("pointer-events", "none")
       .style("opacity", 0);
