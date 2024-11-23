@@ -12,9 +12,9 @@ const LineChart = ({ data, country }) => {
   const prepareChartData = (data) => {
     return data.map((item) => {
       const currentPos = parseInt(item.daily_rank);
-      const weekly_movement = parseInt(item.weekly_movement)
+      const weekly_movement = parseInt(item.weekly_movement);
       const lastWeekPos =
-      weekly_movement == 0 ? currentPos : currentPos + weekly_movement;
+        weekly_movement == 0 ? currentPos : currentPos + weekly_movement;
 
       const positions = interpolatePositions(lastWeekPos, currentPos).map(
         (position, i) => ({
@@ -58,11 +58,13 @@ const LineChart = ({ data, country }) => {
 
     const xScale = d3.scalePoint().domain(allDates).range([0, width]);
 
+    console.log(chartData)
+
     const yScale = d3
       .scaleLinear()
       .domain([
-        d3.min(chartData, (d) => d3.min(d.positions, (p) => p.position)) - 1,
         d3.max(chartData, (d) => d3.max(d.positions, (p) => p.position)) + 1,
+        d3.min(chartData, (d) => d3.min(d.positions, (p) => p.position)) - 1,
       ])
       .range([height, 0]);
 
@@ -119,6 +121,28 @@ const LineChart = ({ data, country }) => {
         });
       });
 
+    // Add points
+    svg
+      .append("g")
+      .selectAll(".point")
+      .data(
+        chartData.flatMap((song) =>
+          song.positions.map((p) => ({
+            date: p.date,
+            position: p.position,
+            name: song.name,
+          }))
+        )
+      )
+      .join("circle")
+      .attr("class", "point")
+      .attr("cx", (d) => xScale(d.date))
+      .attr("cy", (d) => yScale(d.position))
+      .attr("r", 4)
+      .attr("fill", "red")
+      .attr("stroke", "white")
+      .attr("stroke-width", 1);
+
     const dot = svg.append("g").attr("display", "none");
 
     dot.append("circle").attr("r", 4.5).attr("fill", "red");
@@ -161,8 +185,8 @@ const LineChart = ({ data, country }) => {
   return (
     <div className="flex flex-col items-center space-y-10">
       <h1 className="font-semibold">
-        Change in rankings of the 10 top songs in {country != "" ? country : "the World"} compared to the
-        previous week
+        Change in rankings of the 10 top songs in{" "}
+        {country != "" ? country : "the World"} compared to the previous week
       </h1>
       <svg ref={svgRef}></svg>
     </div>
