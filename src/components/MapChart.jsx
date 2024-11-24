@@ -91,11 +91,21 @@ const MapChart = ({ data, setCountry }) => {
       .attr("fill", "white");
   }, [data, setCountry]);
 
+  const information = {
+    "About this Visualization" : "This interactive map of the world displays the countries that have data about songs statistics in Spotify.",
+    "Key Features": [
+      "Countries that have the a light green color, means that it exists statistics about Spotify in this country, so you can select this country",
+      "Countries that have a light gray color don't have any data and therefore you're not allowed to select it",
+      "When you hover over a country with a light green color a tooltip displays with the name of the country"
+    ],
+    "How to use": "Look for the country that you want to learn more about Spotify statistics associated, and if the country you want has a light green color than you can select it, otherwize you can't."
+  }
+
   return (
     <div className="flex flex-col text-center">
       <div className="flex flex-row items-center justify-between">
-        <h1 className="font-semibold">Map of the World</h1>
-        <HelpPopHover />
+        <h1 className="font-semibold text-lg">Map of the World</h1>
+        <HelpPopHover information={information} placement="down" />
       </div>
       <svg id="map-chart"></svg>
     </div>
