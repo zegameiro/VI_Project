@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { Chip } from "@nextui-org/react";
+
+import HelpPopHover from "./HelpPopOver";
 
 const PieChart = ({ data, country }) => {
   const ref = useRef();
@@ -76,9 +77,20 @@ const PieChart = ({ data, country }) => {
         );
   }, [data, country]);
 
+  const information = {
+    "About this Visualization" : "A Pie Chart that shows the total number of songs that are considered Explicit and Non Explicit for a given country or the entire world.",
+    "Key Features": [
+      "The number of explicit songs is represented with the color red where the number is also displayed",
+      "The number of non explicit songs is presented with the blue color, and the number is also displayed",
+    ],
+  }
+
   return (
-    <div className="flex flex-col items-center space-y-10">
-      <h1 className="font-semibold">Number of Explicit and Non Explicit songs</h1>
+    <div className="flex flex-col items-center space-y-10 w-full">
+      <span className="flex flex-row items-center justify-between w-full">
+        <h1 className="font-semibold">Number of Explicit and Non Explicit songs</h1>
+        <HelpPopHover information={information} placement="left" />
+      </span>
       <svg ref={ref}></svg>
     </div>
   );
