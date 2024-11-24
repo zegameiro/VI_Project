@@ -46,7 +46,7 @@ const MainPage = () => {
       <div className="flex flex-col min-h-screen px-10 py-5">
         {data.length > 0 && (
           <div className="flex flex-col">
-            <div className="flex flex-row justify-evenly">
+            <div className="flex flex-row justify-between">
               {song != null ? (
                 <BubbleMap data={data} song={song} setCountry={setCountry} />
               ) : (
