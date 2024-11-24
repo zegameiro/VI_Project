@@ -13,6 +13,7 @@ import {
 import { useEffect, useState } from "react";
 
 import SpiderChart from "./SpiderChart";
+import HelpPopHover from "./HelpPopOver";
 
 const CompareModal = ({ data, country }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -39,6 +40,16 @@ const CompareModal = ({ data, country }) => {
     setSongObjects(selectedObjects);
   };
 
+  const information = {
+    "About this Visualization" : "This visualization allows you to compare multiple songs, based on their statistics (Dancebility, Energy, Speechiness, Acousticness, Liveness, Valence)",
+    "Key Features": [
+      "Selection of mulitple songs to allow comparison between various songs",
+      "Representation of this statistics using a spider chart",
+      "All the songs choosen will be displayed with a different color",
+    ],
+    "How to use": "In the select component, choose at least 2 songs and then a spider chart will be displayed with information relative to each song. To deselect a song simply open the select component and click on the song that you want to deselect."
+  };
+
   return (
     <div>
       <Button onPress={onOpen} color="secondary">
@@ -57,14 +68,15 @@ const CompareModal = ({ data, country }) => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1 text-white">
+              <ModalHeader className="flex flex-row justify-between items-center gap-1 text-white">
                 Compare songs from top 10 of {country != "" ?  country : "the World"}
+                <HelpPopHover information={information} placement="left" />
               </ModalHeader>
               <ModalBody className="">
                 <Select
                   items={songs}
                   label="Songs to compare"
-                  placeholder="Select 2 songs"
+                  placeholder="Select at least 2 songs..."
                   labelPlacement="outside"
                   className="dark w-full text-white"
                   selectionMode="multiple"
