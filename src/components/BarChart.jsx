@@ -33,14 +33,15 @@ const BarChart = ({ data, country }) => {
     const tooltip = d3.select("body")
       .append("div")
       .style("position", "absolute")
-      .style("background", "white")
+      .style("background", "black")
       .style("border", "1px solid #ccc")
       .style("padding", "8px")
       .style("border-radius", "4px")
       .style("box-shadow", "0px 2px 10px rgba(0, 0, 0, 0.1)")
       .style("visibility", "hidden")
       .style("pointer-events", "none")
-      .style("font-size", "12px");
+      .style("font-size", "12px")
+      .style("color", "white");
 
     svg
       .append("text")
