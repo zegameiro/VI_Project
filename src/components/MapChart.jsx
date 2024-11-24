@@ -8,8 +8,6 @@ const MapChart = ({ data, setCountry }) => {
   useEffect(() => {
     const countryData = new Set(data.map((d) => d.country));
 
-    console.log(countryData);
-
     const handleCountryClick = (event, country) => {
       setCountry(country);
     };
@@ -31,10 +29,13 @@ const MapChart = ({ data, setCountry }) => {
 
     const svg = d3
       .select("#map-chart")
+      .html("")
       .attr("width", width)
       .attr("height", height)
       .attr("viewBox", [0, 0, width, height])
       .attr("style", "max-width: 100%; height: auto;");
+
+    const g = svg.append("g")
 
     const tooltip = d3
       .select("body")
@@ -50,11 +51,9 @@ const MapChart = ({ data, setCountry }) => {
       .style("font-size", "12px")
       .style("color", "white");
 
-    svg.append("path").attr("d", path);
+    g.append("path").attr("d", path);
 
-    svg
-      .append("g")
-      .selectAll("path")
+    g.selectAll("path")
       .data(countries.features)
       .join("path")
       .attr("d", path)
@@ -89,6 +88,20 @@ const MapChart = ({ data, setCountry }) => {
       .append("title")
       .text((d) => d.properties.name)
       .attr("fill", "white");
+
+      const zoom = d3.zoom()
+        .scaleExtent([1, 8])
+        .on("zoom", (event) => {
+          g.attr("transform", event.transform);
+        });
+
+      svg.call(zoom);
+
+      return () => {
+        tooltip.remove();
+        svg.on(".zoom", null)
+      };
+
   }, [data, setCountry]);
 
   const information = {
@@ -96,7 +109,8 @@ const MapChart = ({ data, setCountry }) => {
     "Key Features": [
       "Countries that have the a light green color, means that it exists statistics about Spotify in this country, so you can select this country",
       "Countries that have a light gray color don't have any data and therefore you're not allowed to select it",
-      "When you hover over a country with a light green color a tooltip displays with the name of the country"
+      "When you hover over a country with a light green color a tooltip displays with the name of the country",
+      "Zoom in and zoom out in the map"
     ],
     "How to use": "Look for the country that you want to learn more about Spotify statistics associated, and if the country you want has a light green color than you can select it, otherwize you can't."
   };
