@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
+import HelpPopHover from "./HelpPopOver";
+
 const BarChart = ({ data, country }) => {
   const svgRef = useRef();
 
@@ -87,9 +89,22 @@ const BarChart = ({ data, country }) => {
 
   }, [data, country]);
 
+  const information = {
+    "About this Visualization" : "Bar chart that presents the popularity values of each song from the top 10 list of a given country or the entire world.",
+    "Key Features": [
+      "The x axis presents the ranking of each song with ascending order",
+      "The y axis presents the possible popularity values for the songs",
+      "Each bar represents a song in the list",
+    ],
+    "How to use": "To identify each song you can hover over each bar and learn which song is being represented, the popularity value is also presented."
+  }
+
   return (
     <div className="flex flex-col space-y-10 text-center">
-      <h1 className="font-semibold">Popularity of the top 10 Songs in {country != "" ? country : "the World"} </h1>
+      <span className="flex flex-row items-center justify-between">
+        <h1 className="font-semibold">Popularity of the top 10 Songs in {country != "" ? country : "the World"} </h1>
+        <HelpPopHover information={information} placement="left" />
+      </span>
       <svg ref={svgRef}></svg>
     </div>
   )
