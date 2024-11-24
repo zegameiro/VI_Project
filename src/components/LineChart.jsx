@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
+import HelpPopHover from "./HelpPopOver";
+
 const LineChart = ({ data, country }) => {
   const svgRef = useRef();
 
@@ -182,12 +184,26 @@ const LineChart = ({ data, country }) => {
       .on("pointerleave", pointerleft);
   }, [data, country]);
 
+  const information = {
+    "About this Visualization" : "Line Chart that displays the changes that occured in the rankings of the top 10 songs in a given country or the entire world, in a full week",
+    "Key Features": [
+      "Each line represents a song from the top 10 list of a country or the entire world",
+      "If the line is growing than it means that song rose up in the top 10 list ranking",
+      "If the line is decreasing than the song came down in the ranking",
+      "If the line is constant (has always the same values) it means that the song maintained the same ranking during the entire week"
+    ],
+    "How to use": "To learn which line belongs to which song, simply hover over the red dots on each line and you'll learn the song thats being represented. It will also present the ranking value at a given date"
+  }
+
   return (
-    <div className="flex flex-col items-center space-y-10">
-      <h1 className="font-semibold">
-        Change in rankings of the 10 top songs in{" "}
-        {country != "" ? country : "the World"} compared to the previous week
-      </h1>
+    <div className="flex flex-col items-center ">
+      <span className="flex flex-row justify-between items-center">
+        <h1 className="font-semibold w-3/4 text-lg">
+          Change in rankings of the 10 top songs in{" "}
+          {country != "" ? country : "the World"} compared to the previous week
+        </h1>
+        <HelpPopHover information={information} placement="left" />
+      </span>
       <svg ref={svgRef}></svg>
     </div>
   );
