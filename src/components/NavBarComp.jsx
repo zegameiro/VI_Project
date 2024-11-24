@@ -20,13 +20,6 @@ const NavBarComp = () => {
           <p className="font-bold text-inherit">SpotiVis</p>
         </Link>
       </NavbarBrand>
-      <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="/about" color="success">
-            About us
-          </Link>
-        </NavbarItem>
-      </NavbarContent>
     </Navbar>
   );
 };
