@@ -59,7 +59,7 @@ const MainPage = () => {
                 song={song}
               />
             </div>
-            <div className="flex flex-row py-5 space-x-5">
+            <div className="flex flex-row py-10 space-x-5">
               <Button
                 color="primary"
                 onClick={() => {

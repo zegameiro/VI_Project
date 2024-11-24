@@ -99,7 +99,7 @@ const MapChart = ({ data, setCountry }) => {
       "When you hover over a country with a light green color a tooltip displays with the name of the country"
     ],
     "How to use": "Look for the country that you want to learn more about Spotify statistics associated, and if the country you want has a light green color than you can select it, otherwize you can't."
-  }
+  };
 
   return (
     <div className="flex flex-col text-center">
